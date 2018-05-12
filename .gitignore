@@ -1,0 +1,15 @@
+# Django stuff:
+*.log
+.static_storage/
+.media/
+local_settings.py
+*.sqlite3
+migrations/
+
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual Environment
+venv/
