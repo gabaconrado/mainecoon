@@ -1,0 +1,48 @@
+stages:
+  - deploy
+  - code_style
+  - clean
+
+prepare_venv:
+  stage:
+    deploy
+  script:
+    - echo "updating repository"
+    - apt update
+    - echo "instaling virtualenv"
+    - apt install virtualenv -y
+    - echo "creating virtual environment"
+    - virtualenv venv -p python3
+    - echo "activating virtual environment"
+    - source venv/bin/activate
+    - echo "installing deps"
+    - pip install -r deploy/requirements.txt
+    - echo "deactivating virtual environment"
+    - deactivate
+  artifacts:
+    paths:
+      - venv/
+
+pycodestyle:
+  stage:
+    code_style
+  script:
+    - source venv/bin/activate
+    - pycodestyle xscratch
+    - deactivate
+
+pylint:
+  stage:
+    code_style
+  script:
+    - source venv/bin/activate
+    - pylint xscratch
+    - deactivate
+
+clean_all:
+  stage:
+    clean
+  script:
+    - rm venv/ -r
+  when:
+    always

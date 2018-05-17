@@ -1,0 +1,11 @@
+{% extends 'xscratch/base.html' %}
+
+{% block title %}Sign in{% endblock %}
+{% block content %}
+  <form action="{% url 'xs:sign_in' %}" method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <input type="submit" value="Entrar" />
+  </form>
+  <a href="{% url 'xs:sign_up' %}">Cadastrar</a>
+{% endblock %}

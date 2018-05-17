@@ -1,0 +1,7 @@
+{% extends 'xscratch/base.html' %}
+
+{% block title %}Home{% endblock %}
+{% block content %}
+  <h1>Bem-vindo ao Maine Coon, {{ request.user.first_name|title }}!</h1>  
+  <a href="{% url 'xs:sign_out' %}">Logout</a>
+{% endblock %}
