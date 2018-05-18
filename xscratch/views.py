@@ -105,9 +105,7 @@ class SignInView(TemplateView):
         if form.is_valid():
             username = form.cleaned_data['username']
             password = form.cleaned_data['password']
-            print("Username = {} password = {}".format(username, password))
             user = authenticate(request, username=username, password=password)
-            print(user)
             if user is not None:
                 login(request, user)
                 print("User {} logged".format(user))
@@ -138,3 +136,46 @@ class HomeView(LoginRequiredMixin, TemplateView):
     @attrib: str template_name: homepage's html template path
     '''
     template_name = 'xscratch/home.html'
+
+
+class ScriptView(LoginRequiredMixin, TemplateView):
+    '''
+    xScratch app script view
+
+    @attrib: str template_name: script's html template path
+    '''
+    form_class = forms.ScriptForm
+    template_name = 'xscratch/script.html'
+
+    def get(self, request, *args, **kwargs):
+        '''
+        Handles a get request
+        Renders the script template
+
+        @return: renders scripting view
+        '''
+        form = self.form_class()
+        return render(request, self.template_name, {'form': form})
+
+    def post(self, request):
+        '''
+        Handles a post request
+        Compiles the script and return the output to the view
+
+        @return: renders the script page with the output on the context
+        @raises: ValidationError if script data is invalid
+        '''
+        form = self.form_class(request.POST)
+        if form.is_valid():
+            # TODO: compile the script
+            output = 'Script output'
+        return render(request, self.template_name, {'script_output': output, 'form': form})
+
+
+class LearnView(LoginRequiredMixin, TemplateView):
+    '''
+    xScratch app learn view
+
+    @attrib: str template_name: learn's html template path
+    '''
+    template_name = 'xscratch/learn.html'

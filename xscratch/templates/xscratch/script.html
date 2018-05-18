@@ -1,0 +1,13 @@
+{% extends 'xscratch/base.html' %}
+
+{% block title %}Programar{% endblock %}
+{% block content %}
+  <h1>Programe aqui!</h1>
+  <form action="{% url 'xs:script' %}" method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <input type="submit" value="Executar" />
+  </form>
+  Resultado:
+  <textarea rows="10" cols="30" id="output_textarea" readonly>{% if script_output %}{{ script_output }}{% endif %}</textarea>
+{% endblock %}

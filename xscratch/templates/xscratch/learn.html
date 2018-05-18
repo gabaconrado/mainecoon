@@ -1,0 +1,25 @@
+{% extends 'xscratch/base.html' %}
+{% load static %}
+
+{% block scripts %}
+  <script src="{% static 'xscratch/js/pdfobject.js' %}"></script>
+  <script type="text/javascript">
+    function loadPdf(filename){
+      PDFObject.embed("{% static "xscratch/pdf/" %}"+ filename, "#pdf_container")
+    }
+  </script>
+{% endblock %}
+{% block title %}Aprender{% endblock %}
+{% block content %}
+  <h1>Aprenda aqui!</h1>
+  <div>
+    <div>
+      <ul>
+        <li onclick="loadPdf('sample.pdf')">PDF 1</li>
+        <li onclick="loadPdf('sample2.pdf')">PDF 2</li>
+        <li onclick="loadPdf('sample3.pdf')">PDF 3</li>
+      </ul>
+    </div>
+    <div id="pdf_container" style="height: 600px"></div>
+  </div>
+{% endblock %}

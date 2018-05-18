@@ -36,3 +36,11 @@ class SignInForm(forms.Form):
     '''
     username = forms.CharField(label='username', max_length=50)
     password = forms.CharField(label='password', max_length=20, widget=forms.PasswordInput)
+
+
+class ScriptForm(forms.Form):
+    '''
+    The script form
+    @field script_str: The developed script
+    '''
+    script_str = forms.CharField(label='script', widget=forms.Textarea)

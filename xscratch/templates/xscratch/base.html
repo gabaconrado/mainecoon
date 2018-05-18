@@ -1,9 +1,17 @@
 <!doctype html>
 <html>
 <head>
-  <title>{% block title %}{% endblock %}</title>
+  <title>{% block title %}{% endblock %}</title>  
+  {% block scripts %}
+  {% endblock %}
 </head>
 <body>
+  {% if request.user.is_authenticated %}
+    <p>
+      <a href="{% url 'xs:home' %}">Home</a> | <a href="{% url 'xs:learn' %}">Aprender</a> |
+      <a href="{% url 'xs:script' %}">Programar</a> | <a href="{% url 'xs:sign_out' %}">Sair</a>
+    </p>
+  {% endif %}
   {% block content %}
   {% endblock %}
 </body>
