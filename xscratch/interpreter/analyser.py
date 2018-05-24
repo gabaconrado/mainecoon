@@ -2,6 +2,8 @@
 xScratch analysers components
 '''
 
+from collections import deque
+
 from xscratch.exceptions import XSSyntaxError
 from .token import XSToken
 from . import functions
@@ -23,6 +25,9 @@ class XSInterpreter():
     environment = {}
     if_flag = False
     if_branch = False
+    for_flag = False
+    for_counter = 0
+    for_instructions = deque()
 
     # TODO: Get the string from the view
     def __init__(self):
@@ -39,6 +44,9 @@ class XSInterpreter():
         '''
         Clears the environment after an execution
         '''
+        self.if_flag = self.if_branch = self.for_flag = False
+        self.for_counter = 0
+        self.for_instructions.clear()
         self.environment.clear()
 
     def read(self):
@@ -51,7 +59,8 @@ class XSInterpreter():
         # except XSSyntaxError as error:
         #     print("Syntax error found: {}".format(error))
 
-    # pylint: disable=too-many-branches
+    # TODO: Refactor this function to solve pylint problems
+    # pylint: disable=too-many-branches, too-many-locals, too-many-statements
     def _process(self):
         '''
         Process the input while there is new lines
@@ -61,7 +70,15 @@ class XSInterpreter():
         '''
         # While there is a new line
         while True:
-            next_line = self._get_line()
+            if not self.for_flag:
+                next_line = self._get_line()
+            else:
+                self.for_counter -= 1
+                next_line = self.for_instructions.popleft()
+                if self.for_counter >= 0:
+                    self.for_instructions.append(next_line)
+                if not self.for_instructions:
+                    self.for_flag = False
             if not next_line:
                 break
             # Gets the token iterator
@@ -110,15 +127,19 @@ class XSInterpreter():
                         self._load_from_environment(left.value)
                     self.if_flag = True
                     self.if_branch = self._evaluate_comparison(left, right, comparator)
-                    # TODO: implement the branching
-                # elif first.value == 'para':
-                #     iterator = next(tokens)
-                #     start = next(tokens)
-                #     end = next(tokens)
-                #     if start.t_type != 'immediate' or end.t_type != 'immediate' or
-                #        end.value == start.value or end.value < start.value:
-                #         self._raise_error()
-                #     self.for_counter = (end.value - start.value) + 1
+                elif first.value == 'para':
+                    start = next(tokens)
+                    end = next(tokens)
+                    if start.t_type != 'immediate' or end.t_type != 'immediate' or \
+                       end.value == start.value or end.value < start.value:
+                        self._raise_error()
+                    self.for_flag = True
+                    while True:
+                        new_line = self._get_line()
+                        if new_line.split(' ')[0] == 'fimpara':
+                            break
+                        self.for_instructions.append(new_line)
+                    self.for_counter = (end.value - start.value) * len(self.for_instructions)
                 else:
                     self._raise_error()
             else:

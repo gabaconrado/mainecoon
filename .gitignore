@@ -13,6 +13,3 @@ __pycache__/
 
 # Virtual Environment
 venv/
-
-# Test script files
-resources/test/script.xs
