@@ -1,4 +1,4 @@
 pycodestyle
 pylint
-ipython
 django
+pyserial
