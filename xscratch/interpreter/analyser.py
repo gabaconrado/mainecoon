@@ -4,9 +4,9 @@ xScratch analysers components
 
 from collections import deque
 
-from xscratch.exceptions import XSSyntaxError
+from xscratch.arduino.arduino import XSArduinoService
+from xscratch.exceptions import XSSyntaxError, XSArduinoError
 from .token import XSToken
-from . import functions
 
 
 class XSInterpreter():
@@ -18,10 +18,6 @@ class XSInterpreter():
     operators = '+-*/'
     comparators = ['maior', 'menor', 'diferente', 'igual']
 
-    functions = {
-        'escreva': functions.escreva
-    }
-
     environment = {}
     if_flag = False
     if_branch = False
@@ -30,15 +26,22 @@ class XSInterpreter():
     for_instructions = deque()
 
     # TODO: Get the string from the view
-    def __init__(self):
+    def __init__(self, script):
         '''
         Initialize interpreter
 
         @param str script: the raw script
         '''
-        with open('/home/gabriel/dev/mainecoon/resources/test/script.xs', 'rb') as script_file:
-            script = script_file.read().decode('utf-8')
+        # with open('/home/gabriel/dev/mainecoon/resources/test/script.xs', 'rb') as script_file:
         self.script = iter(script.splitlines())
+        try:
+            self.arduino_service = XSArduinoService()
+            self.functions = {
+                'escreva': self.arduino_service.lcd_write,
+                'alternaled': self.arduino_service.toggle_led
+            }
+        except XSArduinoError:
+            self._raise_error()
 
     def _clear(self):
         '''
@@ -54,8 +57,10 @@ class XSInterpreter():
         Interpret the loaded script
         '''
         # try:
+        self.arduino_service.open()
         self._process()
         self._clear()
+        self.arduino_service.close()
         # except XSSyntaxError as error:
         #     print("Syntax error found: {}".format(error))
 
@@ -112,7 +117,7 @@ class XSInterpreter():
                     # Function
                     argument = self._load_from_environment(second.value) if \
                         second.t_type == 'identifier' else second.value
-                    self.functions[first.value](argument)
+                    self._evaluate_function(first.value, argument)
                 else:
                     self._raise_error()
             elif first.t_type == 'reserved':
@@ -185,11 +190,23 @@ class XSInterpreter():
             elif token_str.isalpha():
                 token = XSToken('identifier', token_str)
             elif token_str[0] == '"' and token_str[-1] == '"':
-                token = XSToken('string', token_str)
+                token = XSToken('string', token_str[1:-1])
             else:
                 raise XSSyntaxError('Invalid token {}'.format(token))
             tokenized.append(token)
         return iter(tokenized)
+
+    def _evaluate_function(self, function, argument):
+        '''
+        Get the function name and runs it
+
+        @param str function: function name
+        @param arg argument: function argument
+        '''
+        try:
+            self.functions[function](argument)
+        except XSArduinoError:
+            self._raise_error()
 
     def _evaluate_expression(self, left, right, operator):
         '''

@@ -8,6 +8,8 @@ from django.contrib.auth.models import User
 from django.contrib.auth.mixins import LoginRequiredMixin
 
 from xscratch import forms
+from xscratch.interpreter.analyser import XSInterpreter
+from xscratch.exceptions import XSSyntaxError, XSArduinoError
 
 
 class IndexView(TemplateView):
@@ -168,7 +170,15 @@ class ScriptView(LoginRequiredMixin, TemplateView):
         form = self.form_class(request.POST)
         if form.is_valid():
             # TODO: compile the script
-            output = 'Script output'
+            interpreter = XSInterpreter(form.cleaned_data['script_str'])
+            output = 'fail'
+            try:
+                interpreter.read()
+                output = "Script executado com sucesso"
+            except XSSyntaxError:
+                pass
+            except XSArduinoError:
+                pass
         return render(request, self.template_name, {'script_output': output, 'form': form})
 
 

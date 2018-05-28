@@ -1,13 +1,7 @@
 a = 1
 b = 2
-se a menor b
-escreva "Oi"
-fimse
-para 1 7
-escreva "Acerrtoou"
-a = a + 1
-b = b + 2
+para 1 3
+alternaled "blue"
+alternaled "yellow"
 fimpara
-escreva a
-escreva b
-escreva "Tchau"
+escreva "ABENCOA_TALAO"
