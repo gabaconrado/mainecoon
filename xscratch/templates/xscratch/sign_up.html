@@ -2,9 +2,11 @@
 
 {% block title %}Sign up{% endblock %}
 {% block content %}
-  <form action="{% url 'xs:sign_up' %}" method="post">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <input type="submit" value="Cadastrar" />
-  </form>
+  <div class="central_container">
+    <form action="{% url 'xs:sign_up' %}" method="post" class="sign_up_form">
+      {% csrf_token %}
+      {{ form.as_p }}
+      <input type="submit" value="Cadastrar" />
+    </form>
+  </div>
 {% endblock %}

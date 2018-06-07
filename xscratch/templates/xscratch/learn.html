@@ -1,25 +1,29 @@
 {% extends 'xscratch/base.html' %}
 {% load static %}
-
 {% block scripts %}
   <script src="{% static 'xscratch/js/pdfobject.js' %}"></script>
   <script type="text/javascript">
     function loadPdf(filename){
-      PDFObject.embed("{% static "xscratch/pdf/" %}"+ filename, "#pdf_container")
+      PDFObject.embed("{% static "xscratch/pdf/" %}"+ filename, "#pdf-container")
     }
   </script>
 {% endblock %}
 {% block title %}Aprender{% endblock %}
+{% block menu_items %}
+  <li><img src="{% static 'xscratch/img/maine.png' %}" alt="Mainecoon logo" width="75px" /></li>
+  <li><a href="{% url 'xs:home' %}">Home</a></li>
+  <li class="active"><a href="{% url 'xs:learn' %}">Aprender</a></li>
+  <li><a href="{% url 'xs:script' %}">Programar</a></li>
+  <li style="float:right"><a href="{% url 'xs:sign_out' %}">Sair({{ request.user.first_name|title }})</a></li>
+{% endblock %}
 {% block content %}
-  <h1>Aprenda aqui!</h1>
-  <div>
-    <div>
+    <div id="learning-menu">
       <ul>
-        <li onclick="loadPdf('sample.pdf')">PDF 1</li>
-        <li onclick="loadPdf('sample2.pdf')">PDF 2</li>
-        <li onclick="loadPdf('sample3.pdf')">PDF 3</li>
+        <h1>Lições</h1>
+        <li onclick="loadPdf('sample.pdf')"><a href="#">Capítulo 1</a></li>
+        <li onclick="loadPdf('sample2.pdf')"><a href="#">Capítulo 2</a></li>
+        <li onclick="loadPdf('sample3.pdf')"><a href="#">Capítulo 3</a></li>
       </ul>
     </div>
-    <div id="pdf_container" style="height: 600px"></div>
-  </div>
+    <div id="pdf-container"></div>  
 {% endblock %}

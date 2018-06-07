@@ -1,6 +1,20 @@
 {% extends 'xscratch/base.html' %}
-
+{% load static %}
 {% block title %}Home{% endblock %}
+{% block menu_items %}
+<li><img src="{% static 'xscratch/img/maine.png' %}" alt="Mainecoon logo" width="75px" /></li>
+<li class="active"><a href="{% url 'xs:home' %}">Home</a></li>
+<li><a href="{% url 'xs:learn' %}">Aprender</a></li>
+<li><a href="{% url 'xs:script' %}">Programar</a></li>
+<li style="float:right"><a href="{% url 'xs:sign_out' %}">Sair({{ request.user.first_name|title }})</a></li>
+{% endblock %}
 {% block content %}
-  <h1>Bem-vindo ao Maine Coon, {{ request.user.first_name|title }}!</h1>
+  <div class="news_row">
+    <span class="news_img">
+      <img src="{% static 'xscratch/img/link.jpg' %}"/>
+    </span>
+    <span class="news_text">
+      ASPDSAPOFKPSAFKPSAFKSAPOFKSPAOFKPSOAFKPSAOFKPSOAFKSPAOKFPSOAKFPO
+    </span>
+  </div>
 {% endblock %}

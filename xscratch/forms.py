@@ -23,6 +23,16 @@ class SignUpForm(forms.ModelForm):
         fields = [
             'username', 'first_name', 'last_name', 'email', 'password'
         ]
+        help_texts = {
+            'username': None
+        }
+        labels = {
+            'username': 'login',
+            'first_name': 'primeiro nome',
+            'last_name': 'sobrenome',
+            'email': 'email',
+            'password': 'senha'
+        }
         widgets = {
             'password': forms.PasswordInput(),
         }

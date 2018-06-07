@@ -1,13 +1,134 @@
 {% extends 'xscratch/base.html' %}
+{% load static %}
+{% block scripts %}
+  <script type="text/javascript">
 
+    function addCode(code_str){
+      var txt_code = document.getElementById("id_script_str");
+      txt_code.value += code_str + "\n"
+    }
+
+    function newAttribution(){
+      var identifier = prompt("Entre com o nome do identificador");
+      var value = prompt("Entre com o valor do identificador");
+      var command_str = identifier + " = " + value;
+      createDiv(command_str);
+      addCode(command_str);
+    }
+
+    function newArduinoPrint(){
+      var value = prompt("Entre com o texto a ser escrito");
+      var command_str = 'escreva "' + value + '"';
+      createDiv(command_str);
+      addCode(command_str);
+    }
+
+    function newToggleLed(){
+      var led = prompt("Entre com o led a ser alternado");
+      var command_str = 'alternaled "' + led + '"';
+      createDiv(command_str);
+      addCode(command_str);
+    }
+
+    function newIf(){
+      var condition = prompt("Entre com a condição");
+      var command_str = 'se ' + condition;
+      createDiv(command_str);
+      addCode(command_str);
+    }
+
+    function newEndIf(){
+      createDiv('fimse');
+      addCode('fimse');
+    }
+
+    function newFor(){
+      var initial = prompt("Entre com o valor inicial do contador");
+      var end = prompt("Entre com o valor final do contador");
+      var command_str = 'para ' + initial + ' ' + end;
+      createDiv(command_str);
+      addCode(command_str);
+    }
+
+    function newEndFor(){
+      createDiv('fimpara');
+      addCode('fimpara');
+    }
+
+    var div = null;
+    var offsetX = 0;
+    var offsetY = 0;
+    var blockCount = 0;
+
+    function pickDiv(e){
+      div = event.target;
+      var rect = div.getBoundingClientRect();
+      var positionDivX = rect.left;
+      var positionMouseX = event.clientX;
+      var positionDivY = rect.top;
+      var positionMouseY = event.clientY;
+      offsetX = positionMouseX - positionDivX;
+      offsetY = positionMouseY - positionDivY;
+      document.onmousemove = append;
+      document.onmouseup = letGo;
+    }
+
+    function append(e){
+      mouseX = event.clientX;
+      mouseY = event.clientY;
+      div.style.left = (mouseX - offsetX) + 'px';
+      div.style.top = (mouseY - offsetY) + 'px';
+    }
+
+    function letGo(e){
+      document.onmousemove = null;
+    }
+
+    function createDiv(text){
+        blockCount += 1;
+        var new_div = document.createElement('instruction_' + blockCount);
+        var t = document.createTextNode(text);
+        new_div.appendChild(t);
+        new_div.className = 'instruction-block';
+        new_div.addEventListener('mousedown', pickDiv);
+        document.getElementById("execution-container").appendChild(new_div)
+    }
+
+  </script>
+
+</script>
+{% endblock %}
 {% block title %}Programar{% endblock %}
+{% block menu_items %}
+  <li><img src="{% static 'xscratch/img/maine.png' %}" alt="Mainecoon logo" width="75px" /></li>
+  <li><a href="{% url 'xs:home' %}">Home</a></li>
+  <li><a href="{% url 'xs:learn' %}">Aprender</a></li>
+  <li class="active"><a href="{% url 'xs:script' %}">Programar</a></li>
+  <li style="float:right"><a href="{% url 'xs:sign_out' %}">Sair({{ request.user.first_name|title }})</a></li>
+{% endblock %}
 {% block content %}
-  <h1>Programe aqui!</h1>
-  <form action="{% url 'xs:script' %}" method="post">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <input type="submit" value="Executar" />
-  </form>
-  Resultado:
-  <textarea rows="10" cols="30" id="output_textarea" readonly>{% if script_output %}{{ script_output }}{% endif %}</textarea>
+  <div id="scripting-menu">
+    <ul>
+      <h2>Comandos</h2>
+      <li onclick="newAttribution();"><a href="#">Atribuição</a></li>
+      <li onclick="newArduinoPrint();"><a href="#">Escrever na tela</a></li>
+      <li onclick="newToggleLed();"><a href="#">Alternar LED</a></li>
+      <hr />
+      <h2>Controle</h2>
+      <li onclick="newIf();"><a href="#">Condicional</a></li>
+      <li onclick="newEndIf();"><a href="#">Fim condicional</a></li>
+      <li onclick="newFor();"><a href="#">Repetição</a></li>
+      <li onclick="newEndFor();"><a href="#">Fim repetição</a></li>
+    </ul>
+  </div>
+  <div id="execution-container">
+  </div>
+  <div id="output-container">
+    <form action="{% url 'xs:script' %}" method="post">
+      {% csrf_token %}
+      <input type="submit" value="Executar" />
+      <hr />
+    </form>
+    <div id="output-textarea">{% if script_output %}{{ script_output }}{% endif %}</div>
+  </div>
 {% endblock %}

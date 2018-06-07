@@ -1,11 +1,15 @@
 {% extends 'xscratch/base.html' %}
-
+{% load static %}
 {% block title %}Sign in{% endblock %}
-{% block content %}
-  <form action="{% url 'xs:sign_in' %}" method="post">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <input type="submit" value="Entrar" />
-  </form>
-  <a href="{% url 'xs:sign_up' %}">Cadastrar</a>
+{% block content %}  
+  <div class="central_container">
+    <img src="{% static 'xscratch/img/maine.png' %}" alt="Mainecoon logo" width="200px" />
+    <form action="{% url 'xs:sign_in' %}" method="post" class="sign_up_form">
+      {% csrf_token %}
+      {{ form.as_p }}
+      <input type="submit" value="Entrar"/>
+    </form>
+    <br />
+    <a href="{% url 'xs:sign_up' %}">Cadastrar</a>
+  </div>
 {% endblock %}
