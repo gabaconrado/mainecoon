@@ -53,4 +53,4 @@ class ScriptForm(forms.Form):
     The script form
     @field script_str: The developed script
     '''
-    script_str = forms.CharField(label='script', widget=forms.Textarea)
+    script_str = forms.CharField(label='script', widget=forms.HiddenInput())

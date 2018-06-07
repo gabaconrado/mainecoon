@@ -169,13 +169,15 @@ class ScriptView(LoginRequiredMixin, TemplateView):
         @raises: ValidationError if script data is invalid
         '''
         form = self.form_class(request.POST)
+        print(form)
         if form.is_valid():
-            # TODO: compile the script
-            interpreter = XSInterpreter(form.cleaned_data['script_str'])
+            script = form.cleaned_data['script_str']
+            interpreter = XSInterpreter(script)
             output = 'fail'
             try:
                 interpreter.read()
-                output = "Script executado com sucesso"
+                output = script.splitlines()
+                print(output)
             except XSSyntaxError:
                 pass
             except XSArduinoError:

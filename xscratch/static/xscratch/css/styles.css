@@ -1,32 +1,43 @@
+html *{
+  font-family: Arial, Helvetica, sans-serif;
+}
+
 .central_container {
   margin: auto;
-  width: 300px;
+  margin-top: 100px;
+  width: 50%;
+  min-width: 300px;
+  max-width: 400px;
   padding: 10px;
   border: 2px solid white;
   border-radius: 25px;
   text-align: center;
   box-shadow: 0px 0px 10px;
-  background-color: silver;
+  background-color: #ffffff;
+  opacity: 0.7;
+  color: #660099;
 }
 
 #main_content{
   padding: 75px 0;
   margin: 0;
-  height: 100%;
+  height: 81vh;
+  background-color: #FCFAF9;
 }
 
 .sign_up_form input{
   width: 80%;
   height: 30px;
   margin: 10px;
-  color: purple;
   border: none;
-  border-bottom: 1px solid purple;
+  text-align: center;
+  color: #660099;
+  border-bottom: 1px solid #660099;
   background-color: transparent;
 }
 
 .sign_up_form p{
-  color: purple;
+  color: #660099;
 }
 
 #nav-menu ul{
@@ -38,7 +49,7 @@
   margin: 0;
   padding: 0;
   overflow: hidden;
-  background-color: #333;
+  background-color:	#3d005b;
 }
 
 #nav-menu li{
@@ -56,11 +67,11 @@
 }
 
 #nav-menu li a:hover{
-  background-color: #111;
+  background-color: #094074;
 }
 
 .active {
-  background-color: #4CAF50;
+  background-color: #073159;
 }
 
 .news_row{
@@ -78,12 +89,14 @@
   float: left;
   display: inline-block;
   height: 100%;
+  width: 30%;
   overflow: hidden;
 }
 
 .news_text{
   float: right;
   display: inline-block;
+  width: 70%;
   height: 100%;
   text-align: center;
 }
@@ -99,9 +112,14 @@
   width: 100%;
   margin: 0;
   padding: 0;
-  background-color: #333;
+  background-color:	#3d005b;
   color: white;
   text-align: center;
+}
+
+#nav-bottom a{
+  color: silver;
+  text-decoration: none;
 }
 
 #learning-menu ul {
@@ -151,11 +169,17 @@
   text-decoration: none;
 }
 
+#scripting-menu li a:hover {
+    background-color: #555;
+    color: white;
+}
+
 #execution-container{
   float: right;
   width: 90%;
   height: 45vh;
   border-bottom: 1px solid grey;
+  margin-bottom: 10px;
 }
 
 #output-container{
@@ -167,12 +191,26 @@
   width: 89%;
   min-height: 200px;
   margin-left: 10%;
+  text-align: left;
+}
+
+#run-script-button{
+  width: 100px;
+  height: 50px;
+  text-align: center;
+  background-color: #3d005b;
+  border: none;
+  color: white;
+  border-radius: 8px;
 }
 
 .instruction-block{
   position: absolute;
-  background-color: purple;
+  background-color: #073159;
   width: 200px;
+  height: 25px;
+  padding: 25px 0;
+  border-radius: 15px;
   text-align: center;
   color: white;
   cursor: move;

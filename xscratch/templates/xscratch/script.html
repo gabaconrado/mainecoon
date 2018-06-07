@@ -19,21 +19,21 @@
     function newArduinoPrint(){
       var value = prompt("Entre com o texto a ser escrito");
       var command_str = 'escreva "' + value + '"';
-      createDiv(command_str);
+      createDiv('Escrever "' + value + '"');
       addCode(command_str);
     }
 
     function newToggleLed(){
       var led = prompt("Entre com o led a ser alternado");
       var command_str = 'alternaled "' + led + '"';
-      createDiv(command_str);
+      createDiv('Alternar led "' + led + '"');
       addCode(command_str);
     }
 
     function newIf(){
       var condition = prompt("Entre com a condição");
       var command_str = 'se ' + condition;
-      createDiv(command_str);
+      createDiv('Se ' + condition);
       addCode(command_str);
     }
 
@@ -46,7 +46,7 @@
       var initial = prompt("Entre com o valor inicial do contador");
       var end = prompt("Entre com o valor final do contador");
       var command_str = 'para ' + initial + ' ' + end;
-      createDiv(command_str);
+      createDiv('Para contador de ' + initial + ' até ' + end);
       addCode(command_str);
     }
 
@@ -126,9 +126,11 @@
   <div id="output-container">
     <form action="{% url 'xs:script' %}" method="post">
       {% csrf_token %}
-      <input type="submit" value="Executar" />
+      <input type="submit" value="Executar" id="run-script-button"/>
+      {{ form }}
       <hr />
     </form>
-    <div id="output-textarea">{% if script_output %}{{ script_output }}{% endif %}</div>
+    <h3>Script gerado:</h3>
+    <div id="output-textarea">{% if script_output %}{% for command in script_output %}> {{ command }}<br />{% endfor %}{% endif %}</div>
   </div>
 {% endblock %}

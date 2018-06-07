@@ -10,11 +10,18 @@
 {% endblock %}
 {% block content %}
   <div class="news_row">
-    <span class="news_img">
-      <img src="{% static 'xscratch/img/link.jpg' %}"/>
-    </span>
-    <span class="news_text">
-      ASPDSAPOFKPSAFKPSAFKSAPOFKSPAOFKPSOAFKPSAOFKPSOAFKSPAOKFPSOAKFPO
-    </span>
+    <div class="news_img">
+      <img src="{% static 'xscratch/img/notebook.png' %}"/>
+    </div>
+    <div class="news_text">
+      <h1>Bem vindo ao sistema Mainecoon, {{ request.user.first_name | title }} {{ request.user.last_name | title }}.</h1>
+      <p>
+        Aqui você será capaz de aprender a programar de maneira simples e interativa.
+      </p>
+      <p>
+        Sinta-se a vontade para navegar pelo site, ler o material disponível e gerar
+        seus próprios scripts!
+      </p>
+    </div>
   </div>
 {% endblock %}
